@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vouchsafe</title>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Cormorant+SC:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080b12;
+      --text: #d4cfc7;
+      --accent: #7ea8c4;
+      --btn-border: #2e3d52;
+      --btn-hover: #1a2535;
+      --fade-duration: 0.7s;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.85;
+    }
+
+    /* subtle star field */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 15% 20%, rgba(255,255,255,0.18) 0%, transparent 100%),
+        radial-gradient(1px 1px at 42% 8%,  rgba(255,255,255,0.12) 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 35%, rgba(255,255,255,0.15) 0%, transparent 100%),
+        radial-gradient(1px 1px at 88% 12%, rgba(255,255,255,0.10) 0%, transparent 100%),
+        radial-gradient(1px 1px at 5%  75%, rgba(255,255,255,0.13) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 88%, rgba(255,255,255,0.10) 0%, transparent 100%),
+        radial-gradient(1px 1px at 92% 65%, rgba(255,255,255,0.14) 0%, transparent 100%),
+        radial-gradient(1px 1px at 30% 55%, rgba(255,255,255,0.08) 0%, transparent 100%),
+        radial-gradient(1px 1px at 78% 80%, rgba(255,255,255,0.11) 0%, transparent 100%),
+        radial-gradient(1px 1px at 22% 92%, rgba(255,255,255,0.09) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+    }
+
+    .card {
+      max-width: 680px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    /* thin top rule */
+    .card::before {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.4;
+      margin: 0 auto;
+    }
+
+    #snippet-box {
+      min-height: 220px;
+      transition: opacity var(--fade-duration) ease;
+      text-align: left;
+      color: var(--text);
+      font-size: 1.05rem;
+      letter-spacing: 0.01em;
+    }
+
+    #snippet-box.hidden {
+      opacity: 0;
+    }
+
+    .nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .counter {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      opacity: 0.55;
+      text-transform: uppercase;
+    }
+
+    #next-btn {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid var(--btn-border);
+      padding: 0.55rem 1.4rem;
+      cursor: pointer;
+      transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    #next-btn:hover {
+      background: var(--btn-hover);
+      border-color: var(--accent);
+      color: #a8cce0;
+    }
+
+    #next-btn:disabled {
+      opacity: 0.3;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="card">
+      <div id="snippet-box"></div>
+      <div class="nav-row">
+        <span class="counter" id="counter"></span>
+        <button id="next-btn">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const snippets = [
+      "The canon array assigns me the role of vouchsafe, which I have taken on for six millenia. Elsewhere in the system our knights thrust their blades into the hellgate's heart while the witches' protective barriers whorl the kingdoms white and gold. I am sure I have a wife and child elsewhere in the system but they will not recognise me when we make it out alive. In the oubliette I am surrounded by my engines and charts and orreries and I run my reckoning again.",
+      "Elsewhere in the system they are fighting, fighting. The knights' task is purely physical (or so I am to gather from the array) and they approach it slightly differently each time, changing up the angle of attack, parry, feint, and flight through the sanguine gate. Through the ansible the canon array sings madrigals of chronal thread. One time out of perhaps twenty they sing to me a hit. Then one by one our champions fall, toppling from my orreries, and the portico turns blood-red and the canon sings again.",
+      "Through the ansible the canon array sings madrigals of chronal thread. Coordinates and headings I know well by heart. Twenty of us across the system operating a perfect chiral dance. Canon array knows us all by voice from our pleas and cries and tortured screams as the hellgate takes us all. It keeps us anchored with the recitation of events current, hypothetical, future, and past. Their spell will hold as long as our faith does. It's enough to believe we were all not doomed from the start.",
+      "Twenty of us across the system operating a perfect chiral dance. I alone know exactly where and how and who. Vouchsafe sees the set of solutions as a differentiable surface of a problem that has yet to be defined. Each time they run it back I know a little more. I have learned that the veins of magic run throughout the system through thin gravitational strands of interplanetary dust. I gather my data to tell the array and the next time the mages are able to hold out against the storm for a fraction of a second more. Keeps the connection long enough for the knights to almost attempt another pass. Over six millenia of reckoning I have nearly managed to squeeze in two.",
+      "Each time they sing it back I know a little more. The engines give survival curves of each remaining knight. Dynamically they rise and fall until the time-series looks like a fisherman's weave. I have drawn them out so many times that my fingers no longer hurt. Once upon a time I used to wonder who their families were, which lovers they took. Somewhere in the system there must be something else worth fighting for. Perhaps some of them are fighting for it still. Here there is the problem and the surface of the problem and I draw the strings a little tighter and cut the threads and watch the red wash past the windows until choral sings again.",
+      "Once upon a time I used to wonder who their families were. Time is not so precious when you come to terms with its recurrence. I once spent a century recollecting each one of their names. At the time I had ceased to think there was a solution to the problem. From the scattered cries and swears when each one died a different way I instead drew out familial ties and dynasties across the cosmos. Choral array surely knew for they broadcast each and every word across the sphere. Knowing I had lapsed and they continued to run it back again until I caved, beat my forehead bloody against the portico glass, mangled my hands bloody under the orrery wheels. I set my sights straight and do not remember those names and ties any more.",
+      "At the time I had ceased to think there was a solution to the problem. Now all I see is solution marching steadily towards resolution. The space is not exhaustive and only vouchsafe may call it so. And with every loop it grows and grows because the knights are a little quicker and they live a little longer. And the witches with their circles find a little more time to buy. There is only so much energy in the system for these few dozen seconds (I have run the numbers fast and true) but oh so many ways to order them until the choral array sings us anew. I feel the song like a caress across the person I used to be.",
+      "The space is not exhaustive and only vouchsafe may call it so. Once upon a time I used to wonder who their families were. Each time they sing it back I learn a little more. Twenty of us across the system operating a perfect chiral dance. Through the ansible the choral array sings madrigals of chronal thread. Elsewhere in the system they are fighting, fighting. Six millenia I have vouchsafed and will continue till we're through."
+    ];
+
+    let deck = [];
+    let seen = 0;
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function deal() {
+      if (deck.length === 0) {
+        deck = shuffle(snippets.map((_, i) => i));
+        seen = 0;
+      }
+      return deck.pop();
+    }
+
+    const box = document.getElementById('snippet-box');
+    const btn = document.getElementById('next-btn');
+    const counter = document.getElementById('counter');
+
+    function showSnippet(index, animate) {
+      seen++;
+      const total = snippets.length;
+
+      const display = () => {
+        box.textContent = snippets[index];
+        counter.textContent = `${seen} of ${total}`;
+        box.classList.remove('hidden');
+      };
+
+      if (animate) {
+        btn.disabled = true;
+        box.classList.add('hidden');
+        setTimeout(() => {
+          display();
+          setTimeout(() => { btn.disabled = false; }, 700);
+        }, 700);
+      } else {
+        display();
+      }
+    }
+
+    // Initial load
+    showSnippet(deal(), false);
+
+    btn.addEventListener('click', () => {
+      showSnippet(deal(), true);
+    });
+  </script>
+</body>
+</html>
